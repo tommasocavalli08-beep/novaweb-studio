@@ -1,270 +1,632 @@
-import React, { useMemo, useState } from "react";
+"use client";
+
+import React, { useState, useMemo } from "react";
+import emailjs from "@emailjs/browser";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import {
   Globe,
-  ShoppingCart,
-  LayoutTemplate,
   Smartphone,
-  Zap,
-  CheckCircle,
-  ArrowRight,
+  ShoppingCart,
+  Search,
+  Rocket,
+  CheckCircle
 } from "lucide-react";
 
-export default function App() {
-  const [form, setForm] = useState({
-    project: "Landing Page",
-    pages: "1-3",
-    priority: "Standard",
-    extras: [],
-    nome: "",
-    cognome: "",
-    azienda: "",
-    email: "",
-    telefono: "",
-    messaggio: "",
-  });
+export default function NovaWebStudio() {
+  const [activeLink, setActiveLink] = useState(0);
+  const [sendStatus, setSendStatus] = useState(null);
 
-  const extrasList = [
-    { name: "Blog", price: 250 },
-    { name: "Area Riservata", price: 500 },
-    { name: "SEO Avanzata", price: 300 },
-    { name: "Multilingua", price: 400 },
-    { name: "Pagamenti Online", price: 600 },
-    { name: "Prenotazioni", price: 450 },
+  const links = [
+    {
+      label: "Servizi",
+      href: "#servizi"
+    },
+    {
+      label: "Preventivo",
+      href: "#preventivo"
+    },
+    {
+      label: "Contatti",
+      href: "#contatti"
+    }
   ];
 
-  const estimate = useMemo(() => {
-    const base = {
-      "Landing Page": 700,
-      "Sito Aziendale": 1500,
-      "E-commerce": 2800,
-      "Web App": 4500,
-      "Gestionale": 6000,
-    };
+  const [formData, setFormData] = useState({
+    package: "starter",
+    pages: 5,
+    ecommerce: false,
+    seo: false,
+    booking: false,
+    blog: false,
+    logo: false,
 
-    const pages = {
-      "1-3": 0,
-      "4-8": 400,
-      "9-15": 900,
-      "15+": 1500,
-    };
+    urgency: "standard",
 
-    const priority = {
-      Standard: 0,
-      Prioritaria: 300,
-      Urgente: 800,
-    };
+    name: "",
+    email: "",
+    phone: "",
+    company: "",
+    notes: ""
+  });
 
-    let total = base[form.project] + pages[form.pages] + priority[form.priority];
+  const price = useMemo(() => {
+    let total = 0;
 
-    form.extras.forEach((e) => {
-      const found = extrasList.find((x) => x.name === e);
-      if (found) total += found.price;
-    });
+    // PACKAGES
+    if (formData.package === "starter") total += 400;
+    if (formData.package === "business") total += 700;
+    if (formData.package === "premium") total += 1500;
+
+    // pages
+    total += formData.pages * 50;
+
+    // extras
+    if (formData.ecommerce) total += 800;
+    if (formData.seo) total += 300;
+    if (formData.booking) total += 400;
+    if (formData.blog) total += 200;
+    if (formData.logo) total += 250;
+
+    // urgency
+    if (formData.urgency === "veloce") total += 100;
+    if (formData.urgency === "urgente") total += 300;
 
     return total;
-  }, [form]);
+  }, [formData]);
 
-  const toggleExtra = (extra) => {
-    setForm((prev) => ({
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+
+    setFormData((prev) => ({
       ...prev,
-      extras: prev.extras.includes(extra)
-        ? prev.extras.filter((e) => e !== extra)
-        : [...prev.extras, extra],
+      [name]: type === "checkbox" ? checked : value
     }));
   };
 
-  const submitQuote = () => {
-    const payload = {
-      ...form,
-      estimate,
-    };
+  const sendEmail = async (e) => {
+    e.preventDefault();
 
-    console.log(payload);
+    try {
 
-    alert(
-      "Preventivo inviato. Integra qui Resend o EmailJS per l'invio automatico."
-    );
+      // Mail al cliente
+      await emailjs.send(
+        "service_s2jmler",
+        "template_928fask",
+        {
+          client_name: formData.name,
+          client_email: formData.email,
+          phone: formData.phone,
+          company: formData.company,
+          notes: formData.notes,
+          site_type: formData.package,
+          pages: formData.pages,
+          urgency: formData.urgency,
+          ecommerce: formData.ecommerce ? "Si" : "No",
+          seo: formData.seo ? "Si" : "No",
+          booking: formData.booking ? "Si" : "No",
+          blog: formData.blog ? "Si" : "No",
+          logo: formData.logo ? "Si" : "No",
+          total: `${price}€`
+        },
+        "Q2pHIOlTf25yMEz_B"
+      );
+
+      // Mail a te
+      await emailjs.send(
+        "service_s2jmler",
+        "template_ty076rw",
+        {
+          client_name: formData.name,
+          client_email: formData.email,
+          phone: formData.phone,
+          company: formData.company,
+          notes: formData.notes,
+          site_type: formData.package,
+          pages: formData.pages,
+          urgency: formData.urgency,
+          total: `${price}€`
+        },
+        "Q2pHIOlTf25yMEz_B"
+      );
+
+      setSendStatus("success");
+
+    } catch (err) {
+      console.log(err);
+      setSendStatus("error");
+    }
   };
 
   return (
     <div className="bg-black text-white min-h-screen">
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 via-purple-600/20 to-cyan-600/20 blur-3xl" />
-        <div className="max-w-7xl mx-auto px-6 py-24 relative z-10">
-          <motion.h1
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-5xl md:text-7xl font-bold max-w-4xl"
+
+      {/* NAVBAR */}
+
+      <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-black/70 border-b border-blue-900">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+
+          <div className="flex items-center gap-2">
+            <Image
+              src="/Logo-scritta-vet.png"
+              alt="NovaWeb Studio"
+              width={200}
+              height={200}
+              priority
+              className="
+                opacity-100
+              "
+            />
+          </div>
+
+          <div
+            className="
+    hidden md:flex
+    items-center
+    gap-2
+    bg-white/5
+    border border-white/10
+    backdrop-blur-xl
+    rounded-full
+    p-2
+  "
           >
-            Realizzo siti web che convertono visitatori in clienti.
-          </motion.h1>
+            {links.map((link, index) => (
+              <a
+                key={link.label}
+                href={link.href}
+                onMouseEnter={() => setActiveLink(index)}
+                className="
+        relative
+        px-6
+        py-2
+        text-sm
+        font-medium
+      "
+              >
+                {activeLink === index && (
+                  <motion.div
+                    layoutId="navbar-pill"
+                    className="
+            absolute
+            inset-0
+            rounded-full
+            bg-gradient-to-r
+            from-blue-700
+            via-blue-600
+            to-blue-500
+            shadow-[0_0_30px_rgba(59,130,246,0.6)]
+          "
+                    transition={{
+                      type: "spring",
+                      stiffness: 350,
+                      damping: 30
+                    }}
+                  />
+                )}
 
-          <p className="text-zinc-400 text-xl mt-6 max-w-2xl">
-            Landing page, siti aziendali, e-commerce e web app moderne.
-          </p>
+                <span className="relative z-10 text-white">
+                  {link.label}
+                </span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </nav>
 
-          <div className="flex gap-4 mt-10">
-            <a
-              href="#preventivo"
-              className="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-500"
-            >
-              Calcola Preventivo
-            </a>
+      {/* HERO */}
+
+      <section className="min-h-screen flex items-center justify-center relative overflow-hidden">
+
+        {/* Glow sfondo */}
+        <div className="absolute w-[800px] h-[800px] rounded-full bg-blue-600 blur-[220px] opacity-20"></div>
+
+        <div className="max-w-7xl mx-auto px-6 z-10">
+
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+
+            {/* Logo */}
+            <div className="flex justify-center">
+
+              <Image
+                src="/Logo.png"
+                alt="NovaWeb Studio"
+                width={1800}
+                height={1800}
+                priority
+                className="drop-shadow-[0_0_50px_rgba(37,99,235,0.6)]"
+              />
+
+            </div>
+
+            <p className="text-3xl md:text-5xl font-semibold leading-tight max-w-5xl mx-auto mt-8 bg-gradient-to-r from-white via-blue-300 to-blue-600 bg-clip-text text-transparent">
+              Crea il tuo sito<br/>
+              Facile<br />
+              Veloce<br />
+              Professionale.
+            </p>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      {/* SERVIZI */}
+      
+      <div
+        className="
+          max-w-6xl
+          mx-auto
+          h-[2px]
+          bg-gradient-to-r
+          from-transparent
+          via-blue-400/70
+          to-transparent
+          shadow-[0_0_50px_rgba(59,130,246,0.4)]
+        "
+      ></div>
+
+      <section id="servizi" className="py-24 px-6">
+        <div className="max-w-7xl mx-auto">
+
+          <h2 className="text-5xl font-bold text-center mb-16">
+            I Nostri Servizi
+          </h2>
+
+          <div className="grid md:grid-cols-3 gap-8">
+
+            {[
+              {
+                icon: <Globe size={40} />,
+                title: "Siti Vetrina",
+                desc: "Presenta la tua attività online."
+              },
+              {
+                icon: <ShoppingCart size={40} />,
+                title: "E-Commerce",
+                desc: "Vendi online con facilità."
+              },
+              {
+                icon: <Search size={40} />,
+                title: "SEO",
+                desc: "Posizionamento sui motori di ricerca."
+              },
+              {
+                icon: <Smartphone size={40} />,
+                title: "Responsive",
+                desc: "Perfetti su smartphone."
+              },
+              {
+                icon: <Rocket size={40} />,
+                title: "Performance",
+                desc: "Velocità e ottimizzazione."
+              },
+              {
+                icon: <CheckCircle size={40} />,
+                title: "Supporto",
+                desc: "Assistenza continua."
+              }
+            ].map((item, index) => (
+              <div
+                key={index}
+                className="
+                  bg-zinc-900
+                  border
+                  border-blue-900
+                  rounded-3xl
+                  p-8
+                  transition-all
+                  duration-300
+                  hover:scale-[1.03]
+                  hover
+                  hover:shadow-[0_0_40px_rgba(59,130,246,0.35)]
+                  "
+              >
+                <div className="text-blue-500 mb-4">
+                  {item.icon}
+                </div>
+
+                <h3 className="text-2xl font-bold mb-3">
+                  {item.title}
+                </h3>
+
+                <p className="text-gray-400">
+                  {item.desc}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      <section className="max-w-7xl mx-auto px-6 py-20">
-        <h2 className="text-4xl font-bold mb-10">Cosa posso costruire</h2>
+      {/* PREVENTIVO */}
 
-        <div className="grid md:grid-cols-3 gap-6">
-          {[
-            ["Landing Page", LayoutTemplate],
-            ["Siti Aziendali", Globe],
-            ["E-commerce", ShoppingCart],
-            ["Web App", Smartphone],
-            ["Performance", Zap],
-            ["SEO", CheckCircle],
-          ].map(([title, Icon]) => (
-            <motion.div
-              whileHover={{ y: -8 }}
-              key={title}
-              className="border border-zinc-800 rounded-2xl p-6 bg-zinc-900"
-            >
-              <Icon className="mb-4" />
-              <h3 className="font-semibold text-xl">{title}</h3>
-            </motion.div>
-          ))}
-        </div>
-      </section>
+      <section id="preventivo" className="py-24 px-6">
+        <div className="max-w-6xl mx-auto">
 
-      <section className="max-w-7xl mx-auto px-6 py-20">
-        <h2 className="text-4xl font-bold mb-10">Il mio processo</h2>
-        <div className="grid md:grid-cols-3 gap-6">
-          {[
-            "Analisi",
-            "Progettazione",
-            "Design UI/UX",
-            "Sviluppo",
-            "Testing",
-            "Consegna",
-          ].map((step, i) => (
-            <div key={step} className="bg-zinc-900 p-6 rounded-2xl">
-              <div className="text-blue-400 text-3xl mb-3">0{i + 1}</div>
-              {step}
-            </div>
-          ))}
-        </div>
-      </section>
+          <h2 className="text-5xl font-bold text-center mb-12">
+            Calcola il tuo Preventivo
+          </h2>
 
-      <section id="preventivo" className="max-w-7xl mx-auto px-6 py-20">
-        <h2 className="text-4xl font-bold mb-10">
-          Preventivo Automatico
-        </h2>
+          <div className="grid lg:grid-cols-2 gap-10">
 
-        <div className="grid lg:grid-cols-2 gap-10">
-          <div className="space-y-6">
-            <select
-              className="w-full bg-zinc-900 p-4 rounded-xl"
-              value={form.project}
-              onChange={(e) =>
-                setForm({ ...form, project: e.target.value })
-              }
-            >
-              <option>Landing Page</option>
-              <option>Sito Aziendale</option>
-              <option>E-commerce</option>
-              <option>Web App</option>
-              <option>Gestionale</option>
-            </select>
+            {/* SINISTRA - PACCHETTI */}
+            <div className="bg-zinc-900 p-8 rounded-3xl">
 
-            <select
-              className="w-full bg-zinc-900 p-4 rounded-xl"
-              value={form.pages}
-              onChange={(e) =>
-                setForm({ ...form, pages: e.target.value })
-              }
-            >
-              <option>1-3</option>
-              <option>4-8</option>
-              <option>9-15</option>
-              <option>15+</option>
-            </select>
+              <label className="block mb-4 text-lg font-semibold">
+                Scegli il Pacchetto
+              </label>
 
-            <select
-              className="w-full bg-zinc-900 p-4 rounded-xl"
-              value={form.priority}
-              onChange={(e) =>
-                setForm({ ...form, priority: e.target.value })
-              }
-            >
-              <option>Standard</option>
-              <option>Prioritaria</option>
-              <option>Urgente</option>
-            </select>
+              <div className="grid md:grid-cols-3 gap-6">
 
-            <div className="grid grid-cols-2 gap-3">
-              {extrasList.map((extra) => (
-                <button
-                  key={extra.name}
-                  onClick={() => toggleExtra(extra.name)}
-                  className={`p-3 rounded-xl border ${form.extras.includes(extra.name)
-                      ? "bg-blue-600 border-blue-600"
-                      : "border-zinc-700"
+                {/* STARTER */}
+                <div
+                  onClick={() =>
+                    setFormData((prev) => ({ ...prev, package: "starter" }))
+                  }
+                  className={`cursor-pointer p-6 rounded-2xl border transition duration-300 hover:scale-[1.03] ${formData.package === "starter"
+                      ? "border-blue-500 bg-blue-500/10 shadow-[0_0_30px_rgba(59,130,246,0.3)]"
+                      : "border-white/10 bg-white/5 hover:border-blue-400/50"
                     }`}
                 >
-                  {extra.name}
-                </button>
-              ))}
+                  <h3 className="text-xl font-bold">Starter</h3>
+                  <p className="text-2xl font-black mt-2">€400</p>
+
+                  <ul className="text-sm text-gray-400 mt-4 space-y-1">
+                    <li>• 1 a 3 pagine</li>
+                    <li>• Sito vetrina moderno</li>
+                    <li>• Design responsive</li>
+                    <li>• Setup base</li>
+                  </ul>
+                </div>
+
+                {/* BUSINESS */}
+                <div
+                  onClick={() =>
+                    setFormData((prev) => ({ ...prev, package: "business" }))
+                  }
+                  className={`cursor-pointer p-6 rounded-2xl border transition duration-300 hover:scale-[1.03] ${formData.package === "business"
+                      ? "border-blue-500 bg-blue-500/10 shadow-[0_0_40px_rgba(59,130,246,0.4)] scale-[1.03]"
+                      : "border-white/10 bg-white/5 hover:border-blue-400/50"
+                    }`}
+                >
+                  <div className="flex justify-between items-center">
+                    <h3 className="text-xl font-bold">Business</h3>
+                    <span className="text-xs bg-blue-500/20 text-blue-300 px-2 py-1 rounded-full">
+                      Più scelto
+                    </span>
+                  </div>
+
+                  <p className="text-2xl font-black mt-2">€700</p>
+
+                  <ul className="text-sm text-gray-400 mt-4 space-y-1">
+                    <li>• Fino a 6 pagine</li>
+                    <li>• SEO base inclusa</li>
+                    <li>• Performance ottimizzate</li>
+                    <li>• Integrazioni avanzate</li>
+                  </ul>
+                </div>
+
+                {/* PREMIUM */}
+                <div
+                  onClick={() =>
+                    setFormData((prev) => ({ ...prev, package: "premium" }))
+                  }
+                  className={`cursor-pointer p-6 rounded-2xl border transition duration-300 hover:scale-[1.03] ${formData.package === "premium"
+                      ? "border-blue-500 bg-blue-500/10 shadow-[0_0_40px_rgba(59,130,246,0.4)]"
+                      : "border-white/10 bg-white/5 hover:border-blue-400/50"
+                    }`}
+                >
+                  <h3 className="text-xl font-bold">Premium</h3>
+                  <p className="text-2xl font-black mt-2">€1500</p>
+
+                  <ul className="text-sm text-gray-400 mt-4 space-y-1">
+                    <li>• Progetto strategico completo</li>
+                    <li>• UI/UX su misura</li>
+                    <li>• SEO avanzata</li>
+                    <li>• Animazioni premium</li>
+                  </ul>
+                </div>
+
+              </div>
+
+              {/* URGENCY */}
+              <div className="mt-8">
+                <label className="block mb-3 text-lg font-semibold">
+                  Urgenza del progetto
+                </label>
+
+                <select
+                  name="urgency"
+                  value={formData.urgency}
+                  onChange={handleChange}
+                  className="w-full bg-black border border-zinc-700 p-3 rounded-xl"
+                >
+                  <option value="standard">Standard (14d - 21d +0€) </option>
+                  <option value="veloce">Veloce (7d +100€)</option>
+                  <option value="urgente">Urgente (3d +300€)</option>
+                </select>
+              </div>
+
             </div>
 
-            <input placeholder="Nome" className="w-full bg-zinc-900 p-4 rounded-xl"
-              onChange={(e) => setForm({ ...form, nome: e.target.value })} />
-            <input placeholder="Cognome" className="w-full bg-zinc-900 p-4 rounded-xl"
-              onChange={(e) => setForm({ ...form, cognome: e.target.value })} />
-            <input placeholder="Azienda" className="w-full bg-zinc-900 p-4 rounded-xl"
-              onChange={(e) => setForm({ ...form, azienda: e.target.value })} />
-            <input placeholder="Email" className="w-full bg-zinc-900 p-4 rounded-xl"
-              onChange={(e) => setForm({ ...form, email: e.target.value })} />
-            <input placeholder="Telefono" className="w-full bg-zinc-900 p-4 rounded-xl"
-              onChange={(e) => setForm({ ...form, telefono: e.target.value })} />
+            {/* DESTRA */}
+            <div className="flex flex-col gap-8">
+
+              {/* BOX PREVENTIVO */}
+              <div className="relative p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-xl overflow-hidden">
+
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 via-transparent to-transparent blur-2xl"></div>
+
+                <div className="relative">
+                  <h3 className="text-3xl font-bold">
+                    Preventivo Stimato
+                  </h3>
+
+                  <div className="text-6xl font-black mt-6 bg-gradient-to-r from-white via-blue-300 to-blue-500 bg-clip-text text-transparent">
+                    € {price}
+                  </div>
+
+                  <p className="text-sm text-gray-400 mt-4">
+                    Progetto {formData.package} · {formData.pages} pagine · Urgenza {formData.urgency}
+                  </p>
+
+                  <p className="text-gray-300 mt-4">
+                    Valore indicativo. Il preventivo finale verrà personalizzato dopo analisi.
+                  </p>
+                </div>
+
+              </div>
+
+              {/* FOTO */}
+              <div className="relative overflow-hidden rounded-3xl border border-blue-500/20">
+
+                {/* glow */}
+                <div className="absolute inset-0 bg-blue-500/20 blur-3xl"></div>
+
+                <motion.div
+                  whileHover={{ scale: 1.10 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <div
+                    className="
+                      absolute
+                      -inset-4
+                      rounded-[40px]
+                      bg-gradient-to-r
+                      from-blue-600/40
+                      via-cyan-400/30
+                      to-blue-600/40
+                      blur-[80px]
+                      animate-pulse
+                    "
+                  ></div>
+
+                  <Image
+                    src="/logo-header.png"
+                    alt="Anteprima"
+                    width={1000}
+                    height={700}
+                    className="relative rounded-3xl w-full object-cover"
+                  />
+                </motion.div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <form
+            onSubmit={sendEmail}
+            className="mt-16 bg-zinc-900 rounded-3xl p-8"
+          >
+            <h3 className="text-3xl font-bold mb-8">
+              Ricevi il Preventivo
+            </h3>
+
+            <div className="grid md:grid-cols-2 gap-6">
+
+              <input
+                type="text"
+                name="name"
+                placeholder="Nome"
+                required
+                onChange={handleChange}
+                className="bg-black p-4 rounded-xl"
+              />
+
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                required
+                onChange={handleChange}
+                className="bg-black p-4 rounded-xl"
+              />
+
+              <input
+                type="text"
+                name="phone"
+                placeholder="Telefono"
+                onChange={handleChange}
+                className="bg-black p-4 rounded-xl"
+              />
+
+              <input
+                type="text"
+                name="company"
+                placeholder="Azienda"
+                onChange={handleChange}
+                className="bg-black p-4 rounded-xl"
+              />
+            </div>
 
             <textarea
-              placeholder="Descrivi il progetto"
-              className="w-full bg-zinc-900 p-4 rounded-xl h-40"
-              onChange={(e) => setForm({ ...form, messaggio: e.target.value })}
+              name="notes"
+              placeholder="Descrivi il progetto..."
+              rows="5"
+              onChange={handleChange}
+              className="w-full mt-6 bg-black p-4 rounded-xl"
             />
 
             <button
-              onClick={submitQuote}
-              className="bg-blue-600 px-6 py-4 rounded-xl flex items-center gap-2"
+              type="submit"
+              className="mt-8 px-10 py-4 bg-blue-600 hover:bg-blue-500 rounded-xl font-bold"
             >
-              Invia Preventivo <ArrowRight size={18} />
+              Invia Preventivo
             </button>
-          </div>
 
-          <div className="bg-zinc-900 rounded-3xl p-8">
-            <div className="text-zinc-400">Preventivo stimato</div>
-            <div className="text-6xl font-bold mt-4">
-              € {estimate.toLocaleString("it-IT")}
+
+            <div className="mt-4">
+              {sendStatus === "success" && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ duration: 0.5 }}
+                  className="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-green-500/10 border border-green-500/30 text-green-400 font-medium"
+                >
+                  ✔ Inviato con successo
+                </motion.div>
+              )}
+
+              {sendStatus === "error" && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ duration: 0.5 }}
+                  className="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 font-medium"
+                >
+                  ✖ Errore nell'invio
+                </motion.div>
+              )}
             </div>
 
-            <div className="mt-10 space-y-3">
-              <p>Progetto: {form.project}</p>
-              <p>Pagine: {form.pages}</p>
-              <p>Priorità: {form.priority}</p>
-              <p>Extra: {form.extras.join(", ") || "Nessuno"}</p>
-            </div>
-          </div>
+
+          </form>
+
         </div>
+
+        
+    
       </section>
 
-      <footer className="border-t border-zinc-800 mt-20">
-        <div className="max-w-7xl mx-auto px-6 py-10 text-zinc-400">
-          © 2026 Web Developer • React • Tailwind • Framer Motion
-        </div>
+      {/* FOOTER */}
+
+      <footer
+        id="contatti"
+        className="py-12 border-t border-zinc-800 text-center"
+      >
+        <h3 className="text-3xl font-bold">
+          NOVAWEB STUDIO
+        </h3>
+
+        <p className="text-gray-400 mt-3">
+          Siti Web • SEO • E-Commerce • Branding
+        </p>
       </footer>
+
     </div>
   );
 }
