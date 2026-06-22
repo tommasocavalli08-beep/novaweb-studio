@@ -3,18 +3,24 @@ import { NextRequest, NextResponse } from "next/server";
 export function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;
 
-    // evita loop su /it e /pt
+    // NON toccare file interni Next
+    if (pathname.startsWith("/_next") || pathname.includes(".")) {
+        return NextResponse.next();
+    }
+
+    // se sei già in /it o /pt → lascia stare
     if (pathname.startsWith("/it") || pathname.startsWith("/pt")) {
         return NextResponse.next();
     }
 
-    const country =
-        request.headers.get("x-vercel-ip-country") || "IT";
-
-    const url = request.nextUrl.clone();
-
+    // SOLO root
     if (pathname === "/") {
+        const country =
+            request.headers.get("x-vercel-ip-country") || "IT";
+
+        const url = request.nextUrl.clone();
         url.pathname = country === "BR" ? "/pt" : "/it";
+
         return NextResponse.redirect(url);
     }
 
