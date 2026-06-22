@@ -3,7 +3,6 @@ import { NextRequest, NextResponse } from "next/server";
 export function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;
 
-    console.log("MIDDLEWARE HIT:", pathname);
 
     // lascia passare asset e lingue già corrette
     if (
