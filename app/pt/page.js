@@ -293,10 +293,10 @@ export default function NovaWebStudio() {
 
               <TextType
                 text={[
-                  "Crea il tuo sito.",
-                  "Facile.",
-                  "Veloce.",
-                  "Professionale."
+                  "Cria seu site",
+                  "Facil.",
+                  "ràpido.",
+                  "Professional."
                 ]}
                 typingSpeed={30}
                 deletingSpeed={20}
