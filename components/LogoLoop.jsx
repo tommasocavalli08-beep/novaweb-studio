@@ -84,6 +84,11 @@ const useAnimationLoop = (trackRef, targetVelocity, seqWidth, seqHeight, isHover
             const deltaTime = Math.max(0, timestamp - lastTimestampRef.current) / 1000;
             lastTimestampRef.current = timestamp;
 
+            if (seqSize <= 0) {
+                rafRef.current = requestAnimationFrame(animate);
+                return;
+            }
+
             const target = isHovered && hoverSpeed !== undefined ? hoverSpeed : targetVelocity;
 
             const easingFactor = 1 - Math.exp(-deltaTime / ANIMATION_CONFIG.SMOOTH_TAU);
