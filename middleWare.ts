@@ -1,25 +1,23 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
 export function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;
 
-    // NON toccare file interni Next
+    // NON toccare asset Next
     if (pathname.startsWith("/_next") || pathname.includes(".")) {
         return NextResponse.next();
     }
 
-    // se sei già in /it o /pt → lascia stare
-    if (pathname.startsWith("/it") || pathname.startsWith("/pt")) {
-        return NextResponse.next();
-    }
-
-    // SOLO root
+    // SOLO homepage
     if (pathname === "/") {
         const country =
-            request.headers.get("x-vercel-ip-country") || "IT";
+            request.headers.get("x-vercel-ip-country");
+
+        const lang = country === "BR" ? "pt" : "it";
 
         const url = request.nextUrl.clone();
-        url.pathname = country === "BR" ? "/pt" : "/it";
+        url.pathname = `/${lang}`;
 
         return NextResponse.redirect(url);
     }
@@ -27,6 +25,7 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
 }
 
+// IMPORTANTISSIMO: NON mettere regex aggressive
 export const config = {
-    matcher: ["/((?!_next|favicon.ico).*)"]
+    matcher: "/"
 };
