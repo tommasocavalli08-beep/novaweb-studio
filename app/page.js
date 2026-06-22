@@ -354,12 +354,11 @@ export default function NovaWebStudio() {
                   </div>
                 )
               }))}
-              speed={100}
+              speed={60}
               direction="left"
-              logoHeight={140}
-              hoverSpeed={40}
-              gap={80}
-              scaleOnHover
+              logoHeight={120}
+              gap={40}
+              scaleOnHover={false}
             />
           </div>
         </div>

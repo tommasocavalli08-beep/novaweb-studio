@@ -164,7 +164,9 @@ export const LogoLoop = memo(
         }, [speed, direction, isVertical]);
 
         const updateDimensions = useCallback(() => {
-            const containerWidth = containerRef.current?.clientWidth ?? 0;
+            const containerWidth =
+                containerRef.current?.offsetWidth ||
+                window.innerWidth;
             const sequenceRect = seqRef.current?.getBoundingClientRect?.();
             const sequenceWidth = sequenceRect?.width ?? 0;
             const sequenceHeight = sequenceRect?.height ?? 0;
@@ -191,6 +193,10 @@ export const LogoLoop = memo(
         useResizeObserver(updateDimensions, [containerRef, seqRef], [logos, gap, logoHeight, isVertical]);
 
         useImageLoader(seqRef, updateDimensions, [logos, gap, logoHeight, isVertical]);
+        useEffect(() => {
+            const timer = setTimeout(updateDimensions, 500);
+            return () => clearTimeout(timer);
+        }, [updateDimensions]);
 
         useAnimationLoop(trackRef, targetVelocity, seqWidth, seqHeight, isHovered, effectiveHoverSpeed, isVertical);
 
