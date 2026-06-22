@@ -341,23 +341,55 @@ export default function NovaWebStudio() {
             <div className="pointer-events-none absolute left-0 top-0 h-full w-32 bg-gradient-to-r from-black to-transparent z-10" />
             <div className="pointer-events-none absolute right-0 top-0 h-full w-32 bg-gradient-to-l from-black to-transparent z-10" />
 
-            <LogoLoop
-              logos={serviceLogos.map((item) => ({
-                node: (
-                  <div className="flex flex-col items-center text-center gap-2">
-                    <div className="text-blue-500">{item.node}</div>
-                    <h3 className="text-lg font-bold">{item.title}</h3>
-                    <p className="text-sm text-gray-400">{item.desc}</p>
+            {/* Desktop */}
+            <div className="hidden md:block">
+              <LogoLoop
+                logos={serviceLogos.map((item) => ({
+                  node: (
+                    <div className="flex flex-col items-center text-center gap-2">
+                      <div className="text-blue-500">{item.node}</div>
+                      <h3 className="text-lg font-bold">{item.title}</h3>
+                      <p className="text-sm text-gray-400">{item.desc}</p>
+                    </div>
+                  )
+                }))}
+                speed={110}
+                direction="left"
+                logoHeight={140}
+                hoverSpeed={50}
+                gap={80}
+                scaleOnHover
+              />
+            </div>
+
+            {/* Mobile */}
+            <div className="grid grid-cols-2 gap-6 md:hidden">
+              {serviceLogos.map((item) => (
+                <div
+                  key={item.title}
+                  className="
+        bg-white/5
+        border border-white/10
+        rounded-2xl
+        p-5
+        flex flex-col items-center
+        text-center
+      "
+                >
+                  <div className="text-blue-500 mb-3">
+                    {item.node}
                   </div>
-                )
-              }))}
-              speed={110}
-              direction="left"
-              logoHeight={120}
-              gap={40}
-              scaleOnHover={true}
-              hoverSpeed = {60}
-            />
+
+                  <h3 className="font-bold">
+                    {item.title}
+                  </h3>
+
+                  <p className="text-sm text-gray-400 mt-2">
+                    {item.desc}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -540,7 +572,7 @@ export default function NovaWebStudio() {
                   </div>
 
                   <p className="text-sm text-gray-400 mt-4">
-                    Progetto {formData.package} · {formData.pages} pagine · Delivery {formData.urgency}
+                    Progetto {formData.package} ·  Delivery {formData.urgency}
                   </p>
 
                   <p className="text-gray-300 mt-4">
