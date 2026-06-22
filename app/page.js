@@ -106,9 +106,6 @@ export default function NovaWebStudio() {
     if (formData.package === "business") total += 700;
     if (formData.package === "premium") total += 1500;
 
-    // pages
-    total += formData.pages * 50;
-
     // extras
     if (formData.ecommerce) total += 800;
     if (formData.seo) total += 300;
