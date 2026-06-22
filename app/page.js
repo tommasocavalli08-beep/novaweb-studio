@@ -337,12 +337,10 @@ export default function NovaWebStudio() {
 
           <div className="relative overflow-hidden">
 
-            {/* sfumature ai bordi pagina */}
-            <div className="pointer-events-none absolute left-0 top-0 h-full w-32 bg-gradient-to-r from-black to-transparent z-10" />
-            <div className="pointer-events-none absolute right-0 top-0 h-full w-32 bg-gradient-to-l from-black to-transparent z-10" />
-
             {/* Desktop */}
             <div className="hidden md:block">
+              <div className="pointer-events-none absolute left-0 top-0 h-full w-32 bg-gradient-to-r from-black to-transparent z-10" />
+              <div className="pointer-events-none absolute right-0 top-0 h-full w-32 bg-gradient-to-l from-black to-transparent z-10" />
               <LogoLoop
                 logos={serviceLogos.map((item) => ({
                   node: (
@@ -368,13 +366,13 @@ export default function NovaWebStudio() {
                 <div
                   key={item.title}
                   className="
-        bg-white/5
-        border border-white/10
-        rounded-2xl
-        p-5
-        flex flex-col items-center
-        text-center
-      "
+                    bg-white/5
+                    border border-white/10
+                    rounded-2xl
+                    p-5
+                    flex flex-col items-center
+                    text-center
+                  "
                 >
                   <div className="text-blue-500 mb-3">
                     {item.node}
