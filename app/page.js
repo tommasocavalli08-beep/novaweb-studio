@@ -1,9 +1,11 @@
-import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { headers } from "next/headers";
 
 export default function Home() {
+    const headersList = headers();
+
     const country =
-        headers().get("x-vercel-ip-country") || "IT";
+        headersList.get("x-vercel-ip-country") || "IT";
 
     if (country === "BR") {
         redirect("/pt");
