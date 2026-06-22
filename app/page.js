@@ -1,9 +1,11 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useRef, useEffect } from "react";
 import emailjs from "@emailjs/browser";
 import { motion } from "framer-motion";
-import Image from "next/image";
+import Image from "next/image"; 
+import TextType from "@/components/TextType";
+import LogoLoop from "@/components/LogoLoop";
 import {
   Globe,
   Smartphone,
@@ -13,9 +15,55 @@ import {
   CheckCircle
 } from "lucide-react";
 
+const serviceLogos = [
+  {
+    node: <Globe size={40} />,
+    title: "Siti Vetrina",
+    desc: "Presenta la tua attività online."
+  },
+  {
+    node: <ShoppingCart size={40} />,
+    title: "E-Commerce",
+    desc: "Vendi online con facilità."
+  },
+  {
+    node: <Search size={40} />,
+    title: "SEO",
+    desc: "Posizionamento sui motori di ricerca."
+  },
+  {
+    node: <Smartphone size={40} />,
+    title: "Responsive",
+    desc: "Perfetti su smartphone."
+  },
+  {
+    node: <Rocket size={40} />,
+    title: "Performance",
+    desc: "Velocità e ottimizzazione."
+  },
+  {
+    node: <CheckCircle size={40} />,
+    title: "Supporto",
+    desc: "Assistenza continua."
+  }
+];
+
 export default function NovaWebStudio() {
   const [activeLink, setActiveLink] = useState(0);
   const [sendStatus, setSendStatus] = useState(null);
+  const [openUrgency, setOpenUrgency] = useState(false);
+  const urgencyRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (urgencyRef.current && !urgencyRef.current.contains(e.target)) {
+        setOpenUrgency(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const links = [
     {
@@ -239,12 +287,28 @@ export default function NovaWebStudio() {
 
             </div>
 
-            <p className="text-3xl md:text-5xl font-semibold leading-tight max-w-5xl mx-auto mt-8 bg-gradient-to-r from-white via-blue-300 to-blue-600 bg-clip-text text-transparent">
-              Crea il tuo sito<br/>
-              Facile<br />
-              Veloce<br />
-              Professionale.
-            </p>
+            <div className="
+              text-3xl md:text-5xl font-semibold
+              leading-tight max-w-5xl mx-auto mt-8
+              bg-gradient-to-r from-white via-blue-300 to-blue-600
+              bg-clip-text text-transparent
+              ">
+
+              <TextType
+                text={[
+                  "Crea il tuo sito.",
+                  "Facile.",
+                  "Veloce.",
+                  "Professionale."
+                ]}
+                typingSpeed={30}
+                deletingSpeed={20}
+                pauseDuration={1500}
+                showCursor
+                cursorCharacter="|"
+              />
+
+            </div>
 
           </div>
 
@@ -274,68 +338,29 @@ export default function NovaWebStudio() {
             I Nostri Servizi
           </h2>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="relative overflow-hidden">
 
-            {[
-              {
-                icon: <Globe size={40} />,
-                title: "Siti Vetrina",
-                desc: "Presenta la tua attività online."
-              },
-              {
-                icon: <ShoppingCart size={40} />,
-                title: "E-Commerce",
-                desc: "Vendi online con facilità."
-              },
-              {
-                icon: <Search size={40} />,
-                title: "SEO",
-                desc: "Posizionamento sui motori di ricerca."
-              },
-              {
-                icon: <Smartphone size={40} />,
-                title: "Responsive",
-                desc: "Perfetti su smartphone."
-              },
-              {
-                icon: <Rocket size={40} />,
-                title: "Performance",
-                desc: "Velocità e ottimizzazione."
-              },
-              {
-                icon: <CheckCircle size={40} />,
-                title: "Supporto",
-                desc: "Assistenza continua."
-              }
-            ].map((item, index) => (
-              <div
-                key={index}
-                className="
-                  bg-zinc-900
-                  border
-                  border-blue-900
-                  rounded-3xl
-                  p-8
-                  transition-all
-                  duration-300
-                  hover:scale-[1.03]
-                  hover
-                  hover:shadow-[0_0_40px_rgba(59,130,246,0.35)]
-                  "
-              >
-                <div className="text-blue-500 mb-4">
-                  {item.icon}
-                </div>
+            {/* sfumature ai bordi pagina */}
+            <div className="pointer-events-none absolute left-0 top-0 h-full w-32 bg-gradient-to-r from-black to-transparent z-10" />
+            <div className="pointer-events-none absolute right-0 top-0 h-full w-32 bg-gradient-to-l from-black to-transparent z-10" />
 
-                <h3 className="text-2xl font-bold mb-3">
-                  {item.title}
-                </h3>
-
-                <p className="text-gray-400">
-                  {item.desc}
-                </p>
-              </div>
-            ))}
+            <LogoLoop
+              logos={serviceLogos.map((item) => ({
+                node: (
+                  <div className="flex flex-col items-center text-center gap-2">
+                    <div className="text-blue-500">{item.node}</div>
+                    <h3 className="text-lg font-bold">{item.title}</h3>
+                    <p className="text-sm text-gray-400">{item.desc}</p>
+                  </div>
+                )
+              }))}
+              speed={100}
+              direction="left"
+              logoHeight={140}
+              hoverSpeed={40}
+              gap={80}
+              scaleOnHover
+            />
           </div>
         </div>
       </section>
@@ -432,21 +457,70 @@ export default function NovaWebStudio() {
               </div>
 
               {/* URGENCY */}
-              <div className="mt-8">
+              <div className="mt-8 relative" ref={urgencyRef}>
+
+                {/* LABEL */}
                 <label className="block mb-3 text-lg font-semibold">
                   Urgenza del progetto
                 </label>
 
-                <select
-                  name="urgency"
-                  value={formData.urgency}
-                  onChange={handleChange}
-                  className="w-full bg-black border border-zinc-700 p-3 rounded-xl"
+                {/* BUTTON */}
+                <button
+                  type="button"
+                  onClick={() => setOpenUrgency(!openUrgency)}
+                  className="
+      w-full flex justify-between items-center
+      px-4 py-3 rounded-xl
+      bg-zinc-900 border border-blue-500/20
+      text-white
+      hover:border-blue-500/40
+      transition
+    "
                 >
-                  <option value="standard">Standard (14d - 21d +0€) </option>
-                  <option value="veloce">Veloce (7d +100€)</option>
-                  <option value="urgente">Urgente (3d +300€)</option>
-                </select>
+                  <span className="capitalize">
+                    {formData.urgency}
+                  </span>
+
+                  <span className={`transition ${openUrgency ? "rotate-180" : ""}`}>
+                    ▾
+                  </span>
+                </button>
+
+                {/* DROPDOWN */}
+                {openUrgency && (
+                  <div className="
+      absolute z-50 mt-2 w-full
+      rounded-xl overflow-hidden
+      bg-zinc-900 border border-blue-500/20
+      shadow-[0_0_30px_rgba(59,130,246,0.2)]
+    ">
+                    {[
+                      { value: "standard", label: "Standard (14–21 giorni)" },
+                      { value: "veloce", label: "Veloce (7 giorni +100€)" },
+                      { value: "urgente", label: "Urgente (3 giorni +300€)" }
+                    ].map((item) => (
+                      <div
+                        key={item.value}
+                        onClick={() => {
+                          setFormData((prev) => ({
+                            ...prev,
+                            urgency: item.value
+                          }));
+                          setOpenUrgency(false);
+                        }}
+                        className="
+            px-4 py-3 cursor-pointer text-sm
+            text-gray-200
+            hover:bg-blue-500/10 hover:text-white
+            transition
+          "
+                      >
+                        {item.label}
+                      </div>
+                    ))}
+                  </div>
+                )}
+
               </div>
 
             </div>
@@ -469,7 +543,7 @@ export default function NovaWebStudio() {
                   </div>
 
                   <p className="text-sm text-gray-400 mt-4">
-                    Progetto {formData.package} · {formData.pages} pagine · Urgenza {formData.urgency}
+                    Progetto {formData.package} · {formData.pages} pagine · Delivery {formData.urgency}
                   </p>
 
                   <p className="text-gray-300 mt-4">
