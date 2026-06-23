@@ -598,7 +598,7 @@ export default function NovaWebStudio() {
                   ></div>
 
                   <Image
-                    src="/logo-header.png"
+                    src="/logo-header-pt.png"
                     alt="Anteprima"
                     width={1000}
                     height={700}
