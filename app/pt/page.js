@@ -107,8 +107,8 @@ export default function NovaWebStudio() {
     if (formData.package === "premium") total += 8000;
 
     // urgency
-    if (formData.urgency === "veloce") total += 500;
-    if (formData.urgency === "urgente") total += 1500;
+    if (formData.urgency === "Expresso") total += 500;
+    if (formData.urgency === "Urgente") total += 1500;
 
     return total;
   }, [formData]);
@@ -515,9 +515,9 @@ export default function NovaWebStudio() {
       shadow-[0_0_30px_rgba(59,130,246,0.2)]
     ">
                     {[
-                      { value: "standard", label: "Padrão (14 a 28 dias)" },
-                      { value: "veloce", label: "Expresso (14 dias + 500R$)" },
-                      { value: "urgente", label: "Urgente (7 dias + 1500R$)" }
+                      { value: "Padrão", label: "Padrão (14 a 28 dias)" },
+                      { value: "Expresso", label: "Expresso (14 dias + 500R$)" },
+                      { value: "Urgente", label: "Urgente (7 dias + 1500R$)" }
                     ].map((item) => (
                       <div
                         key={item.value}
