@@ -136,7 +136,7 @@ export default function NovaWebStudio() {
 
       // Mail al cliente
       await emailjs.send(
-        "service_s2jmler",
+        "service_g3hasrb",
         "template_928fask",
         {
           client_name: formData.name,
