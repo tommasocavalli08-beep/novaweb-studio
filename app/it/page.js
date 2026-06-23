@@ -522,9 +522,9 @@ export default function NovaWebStudio() {
       shadow-[0_0_30px_rgba(59,130,246,0.2)]
     ">
                     {[
-                      { value: "standard", label: "Standard (14–21 giorni)" },
-                      { value: "veloce", label: "Veloce (7 giorni +100€)" },
-                      { value: "urgente", label: "Urgente (3 giorni +300€)" }
+                      { value: "standard", label: "Standard (14–28 giorni)" },
+                      { value: "veloce", label: "Veloce (14 giorni +100€)" },
+                      { value: "urgente", label: "Urgente (7 giorni +200€)" }
                     ].map((item) => (
                       <div
                         key={item.value}
