@@ -18,33 +18,33 @@ import {
 const serviceLogos = [
   {
     node: <Globe size={40} />,
-    title: "Siti Vetrina",
-    desc: "Presenta la tua attività online."
+    title: "Sites Institucionais",
+    desc: "Leve sua empresa para a internet com uma presença profissional."
   },
   {
     node: <ShoppingCart size={40} />,
-    title: "E-Commerce",
-    desc: "Vendi online con facilità."
+    title: "Loja Virtual",
+    desc: "Venda seus produtos online de forma simples e profissional."
   },
   {
     node: <Search size={40} />,
     title: "SEO",
-    desc: "Posizionamento sui motori di ricerca."
+    desc: "Apareça no Google e conquiste mais clientes."
   },
   {
     node: <Smartphone size={40} />,
-    title: "Responsive",
-    desc: "Perfetti su smartphone."
+    title: "Responsivo",
+    desc: "Experiência perfeita em celulares, tablets e computadores."
   },
   {
     node: <Rocket size={40} />,
     title: "Performance",
-    desc: "Velocità e ottimizzazione."
+    desc: "Sites rápidos, seguros e otimizados."
   },
   {
     node: <CheckCircle size={40} />,
-    title: "Supporto",
-    desc: "Assistenza continua."
+    title: "Suporte",
+    desc: "Acompanhamento e suporte sempre que precisar."
   }
 ];
 
@@ -67,16 +67,16 @@ export default function NovaWebStudio() {
 
   const links = [
     {
-      label: "Servizi",
-      href: "#servizi"
+      label: "Serviços",
+      href: "#Serviços"
     },
     {
-      label: "Preventivo",
-      href: "#preventivo"
+      label: "Orçamento",
+      href: "#Orçamento"
     },
     {
-      label: "Contatti",
-      href: "#contatti"
+      label: "Contatos",
+      href: "#Contatos"
     }
   ];
 
@@ -102,20 +102,13 @@ export default function NovaWebStudio() {
     let total = 0;
 
     // PACKAGES
-    if (formData.package === "starter") total += 400;
-    if (formData.package === "business") total += 700;
-    if (formData.package === "premium") total += 1500;
-
-    // extras
-    if (formData.ecommerce) total += 800;
-    if (formData.seo) total += 300;
-    if (formData.booking) total += 400;
-    if (formData.blog) total += 200;
-    if (formData.logo) total += 250;
+    if (formData.package === "starter") total += 2300;
+    if (formData.package === "business") total += 3750;
+    if (formData.package === "premium") total += 8000;
 
     // urgency
-    if (formData.urgency === "veloce") total += 100;
-    if (formData.urgency === "urgente") total += 300;
+    if (formData.urgency === "veloce") total += 500;
+    if (formData.urgency === "urgente") total += 1500;
 
     return total;
   }, [formData]);
@@ -293,10 +286,10 @@ export default function NovaWebStudio() {
 
               <TextType
                 text={[
-                  "Cria seu site",
-                  "Facil.",
-                  "ràpido.",
-                  "Professional."
+                  "Crie seu site",
+                  "Fácil.",
+                  "Rápido.",
+                  "Profissional."
                 ]}
                 typingSpeed={30}
                 deletingSpeed={20}
@@ -332,7 +325,7 @@ export default function NovaWebStudio() {
         <div className="max-w-7xl mx-auto">
 
           <h2 className="text-5xl font-bold text-center mb-16">
-            I Nostri Servizi
+            nossos serviços
           </h2>
 
           <div className="relative overflow-hidden">
@@ -398,7 +391,7 @@ export default function NovaWebStudio() {
         <div className="max-w-6xl mx-auto">
 
           <h2 className="text-5xl font-bold text-center mb-12">
-            Calcola il tuo Preventivo
+            Monte seu Orçamento
           </h2>
 
           <div className="grid lg:grid-cols-2 gap-10">
@@ -407,7 +400,7 @@ export default function NovaWebStudio() {
             <div className="bg-zinc-900 p-8 rounded-3xl">
 
               <label className="block mb-4 text-lg font-semibold">
-                Scegli il Pacchetto
+                Escolha o plano ideal
               </label>
 
               <div className="grid md:grid-cols-3 gap-6">
@@ -423,13 +416,13 @@ export default function NovaWebStudio() {
                     }`}
                 >
                   <h3 className="text-xl font-bold">Starter</h3>
-                  <p className="text-2xl font-black mt-2">€400</p>
+                  <p className="text-2xl font-black mt-2">2300R$</p>
 
                   <ul className="text-sm text-gray-400 mt-4 space-y-1">
-                    <li>• 1 a 3 pagine</li>
-                    <li>• Sito vetrina moderno</li>
-                    <li>• Design responsive</li>
-                    <li>• Setup base</li>
+                    <li>• De 1 a 3 páginas</li>
+                    <li>• Site profissional para sua empresa</li>
+                    <li>• Layout responsivo</li>
+                    <li>• Configuração completa</li>
                   </ul>
                 </div>
 
@@ -446,17 +439,17 @@ export default function NovaWebStudio() {
                   <div className="flex justify-between items-center">
                     <h3 className="text-xl font-bold">Business</h3>
                     <span className="text-xs bg-blue-500/20 text-blue-300 px-2 py-1 rounded-full">
-                      Più scelto
+                      Mais escolhido
                     </span>
                   </div>
 
-                  <p className="text-2xl font-black mt-2">€700</p>
+                  <p className="text-2xl font-black mt-2">3750R$</p>
 
                   <ul className="text-sm text-gray-400 mt-4 space-y-1">
-                    <li>• Fino a 6 pagine</li>
-                    <li>• SEO base inclusa</li>
-                    <li>• Performance ottimizzate</li>
-                    <li>• Integrazioni avanzate</li>
+                    <li>• Até 6 páginas</li>
+                    <li>• SEO básico incluso</li>
+                    <li>• Site otimizado para desempenho</li>
+                    <li>• Integrações avançadas</li>
                   </ul>
                 </div>
 
@@ -471,13 +464,13 @@ export default function NovaWebStudio() {
                     }`}
                 >
                   <h3 className="text-xl font-bold">Premium</h3>
-                  <p className="text-2xl font-black mt-2">€1500</p>
+                  <p className="text-2xl font-black mt-2">8000R$</p>
 
                   <ul className="text-sm text-gray-400 mt-4 space-y-1">
-                    <li>• Progetto strategico completo</li>
-                    <li>• UI/UX su misura</li>
-                    <li>• SEO avanzata</li>
-                    <li>• Animazioni premium</li>
+                    <li>• Projeto completo e personalizado</li>
+                    <li>• Design exclusivo (UI/UX)</li>
+                    <li>• SEO avançado</li>
+                    <li>• Animações premium</li>
                   </ul>
                 </div>
 
@@ -488,7 +481,7 @@ export default function NovaWebStudio() {
 
                 {/* LABEL */}
                 <label className="block mb-3 text-lg font-semibold">
-                  Urgenza del progetto
+                  Prazo de entrega
                 </label>
 
                 {/* BUTTON */}
@@ -522,9 +515,9 @@ export default function NovaWebStudio() {
       shadow-[0_0_30px_rgba(59,130,246,0.2)]
     ">
                     {[
-                      { value: "standard", label: "Standard (14–21 giorni)" },
-                      { value: "veloce", label: "Veloce (7 giorni +100€)" },
-                      { value: "urgente", label: "Urgente (3 giorni +300€)" }
+                      { value: "standard", label: "Padrão (14 a 28 dias)" },
+                      { value: "veloce", label: "Expresso (14 dias + 500R$)" },
+                      { value: "urgente", label: "Urgente (7 dias + 1500R$)" }
                     ].map((item) => (
                       <div
                         key={item.value}
@@ -562,19 +555,19 @@ export default function NovaWebStudio() {
 
                 <div className="relative">
                   <h3 className="text-3xl font-bold">
-                    Preventivo Stimato
+                    Valor estimado
                   </h3>
 
                   <div className="text-6xl font-black mt-6 bg-gradient-to-r from-white via-blue-300 to-blue-500 bg-clip-text text-transparent">
-                    € {price}
+                    {price} R$
                   </div>
 
                   <p className="text-sm text-gray-400 mt-4">
-                    Progetto {formData.package} ·  Delivery {formData.urgency}
+                    Plano {formData.package} ·  Entrega {formData.urgency}
                   </p>
 
                   <p className="text-gray-300 mt-4">
-                    Valore indicativo. Il preventivo finale verrà personalizzato dopo analisi.
+                    Valor aproximado. O orçamento final será definido após a análise do seu projeto.
                   </p>
                 </div>
 
@@ -624,7 +617,7 @@ export default function NovaWebStudio() {
             className="mt-16 bg-zinc-900 rounded-3xl p-8"
           >
             <h3 className="text-3xl font-bold mb-8">
-              Ricevi il Preventivo
+              Receba uma proposta personalizada
             </h3>
 
             <div className="grid md:grid-cols-2 gap-6">
@@ -650,7 +643,7 @@ export default function NovaWebStudio() {
               <input
                 type="text"
                 name="phone"
-                placeholder="Telefono"
+                placeholder="Telefone"
                 onChange={handleChange}
                 className="bg-black p-4 rounded-xl"
               />
@@ -658,7 +651,7 @@ export default function NovaWebStudio() {
               <input
                 type="text"
                 name="company"
-                placeholder="Azienda"
+                placeholder="Empresa"
                 onChange={handleChange}
                 className="bg-black p-4 rounded-xl"
               />
@@ -666,7 +659,7 @@ export default function NovaWebStudio() {
 
             <textarea
               name="notes"
-              placeholder="Descrivi il progetto..."
+              placeholder="Conte um pouco sobre o seu projeto..."
               rows="5"
               onChange={handleChange}
               className="w-full mt-6 bg-black p-4 rounded-xl"
@@ -676,7 +669,7 @@ export default function NovaWebStudio() {
               type="submit"
               className="mt-8 px-10 py-4 bg-blue-600 hover:bg-blue-500 rounded-xl font-bold"
             >
-              Invia Preventivo
+              Solicitar orçamento
             </button>
 
 
@@ -688,7 +681,7 @@ export default function NovaWebStudio() {
                   transition={{ duration: 0.5 }}
                   className="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-green-500/10 border border-green-500/30 text-green-400 font-medium"
                 >
-                  ✔ Inviato con successo
+                  ✔ Solicitação enviada com sucesso!
                 </motion.div>
               )}
 
@@ -699,7 +692,7 @@ export default function NovaWebStudio() {
                   transition={{ duration: 0.5 }}
                   className="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 font-medium"
                 >
-                  ✖ Errore nell'invio
+                  ✖ Ocorreu um erro ao enviar. Tente novamente.
                 </motion.div>
               )}
             </div>
@@ -724,7 +717,7 @@ export default function NovaWebStudio() {
         </h3>
 
         <p className="text-gray-400 mt-3">
-          Siti Web • SEO • E-Commerce • Branding
+          Sites Profissionais • SEO • Lojas Virtuais • Branding
         </p>
       </footer>
 
