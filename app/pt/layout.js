@@ -7,7 +7,7 @@ export default function Header() {
       {/* Logo + nome */}
       <div style={styles.left}>
         <Image
-          src="/logo.png"
+          src="/Logo.png"
           alt="Nova Web Logo"
           width={40}
           height={40}
