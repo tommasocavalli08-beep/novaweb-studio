@@ -89,7 +89,7 @@ export default function NovaWebStudio() {
     blog: false,
     logo: false,
 
-    urgency: "standard",
+    urgency: "Padrão",
 
     name: "",
     email: "",
@@ -489,13 +489,13 @@ export default function NovaWebStudio() {
                   type="button"
                   onClick={() => setOpenUrgency(!openUrgency)}
                   className="
-      w-full flex justify-between items-center
-      px-4 py-3 rounded-xl
-      bg-zinc-900 border border-blue-500/20
-      text-white
-      hover:border-blue-500/40
-      transition
-    "
+                    w-full flex justify-between items-center
+                    px-4 py-3 rounded-xl
+                    bg-zinc-900 border border-blue-500/20
+                    text-white
+                    hover:border-blue-500/40
+                    transition
+                  "
                 >
                   <span className="capitalize">
                     {formData.urgency}
