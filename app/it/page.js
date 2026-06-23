@@ -159,7 +159,7 @@ export default function NovaWebStudio() {
 
       // Mail a te
       await emailjs.send(
-        "service_s2jmler",
+        "service_g3hasrb",
         "template_ty076rw",
         {
           client_name: formData.name,
